@@ -187,6 +187,8 @@ impl std::fmt::Display for ContainerInfo {
 #[derive(Debug, PartialEq, PartialOrd, Serialize)]
 pub struct ContainerFilters {
     #[serde(skip_serializing_if = "Vec::is_empty")]
+    ancestor: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     id: Vec<String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     name: Vec<String>,
@@ -195,6 +197,7 @@ pub struct ContainerFilters {
 impl Default for ContainerFilters {
     fn default() -> Self {
         Self {
+            ancestor: vec![],
             id: vec![],
             name: vec![],
         }
@@ -204,6 +207,11 @@ impl Default for ContainerFilters {
 impl ContainerFilters {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    pub fn ancestor(&mut self, ancestor: &str) -> &mut Self {
+        self.ancestor.push(ancestor.to_owned());
+        self
     }
 
     pub fn id(&mut self, id: &str) -> &mut Self {
